@@ -1,0 +1,46 @@
+package me.matt.gamemaker.game;
+
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
+import me.matt.gamemaker.GameSettings;
+
+public abstract class Game {
+
+    public abstract void onLoad(GameSettings settings);
+
+    public abstract void onDisable();
+
+    public abstract void onRepaint(Graphics g);
+
+    public void mouseReleased(final MouseEvent e) {
+    }
+
+    public void mousePressed(final MouseEvent e) {
+    }
+
+    public void mouseExited(final MouseEvent e) {
+    }
+
+    public void mouseEntered(final MouseEvent e) {
+    }
+
+    public void mouseClicked(final MouseEvent e) {
+    }
+
+    public void mouseMoved(final MouseEvent e) {
+    }
+
+    public void mouseDragged(final MouseEvent e) {
+    }
+
+    public void keyPressed(final KeyEvent e) {
+    }
+
+    public void keyReleased(final KeyEvent e) {
+    }
+
+    public void keyTyped(final KeyEvent e) {
+    }
+}
