@@ -46,15 +46,7 @@ public class ToolBar extends JMenuBar {
 		reload.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				if (debugger != null && debugger.isVisible()) {
-					debugger.clear();
-				}
-				if (main.getCurrentGame() != null) {
-					main.getCurrentGame().onDisable();
-				}
-				main.getGamesHandler().reload();
-				main.reset();
-				populateGames();
+				reload();
 			}
 
 		});
@@ -171,6 +163,18 @@ public class ToolBar extends JMenuBar {
 			}
 			file.add(fullScreen);
 		}
+	}
+
+	public void reload() {
+		if (debugger != null && debugger.isVisible()) {
+			debugger.clear();
+		}
+		if (main.getCurrentGame() != null) {
+			main.getCurrentGame().onDisable();
+		}
+		main.getGamesHandler().reload();
+		main.reset();
+		populateGames();
 	}
 
 	private final JMenu file;
