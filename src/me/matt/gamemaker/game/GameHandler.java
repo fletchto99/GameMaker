@@ -9,11 +9,28 @@ import me.matt.gamemaker.game.loader.GameLoader;
 
 public class GameHandler {
 
+	private static File getPluginsFolder() {
+		final File f = new File(new File(Main.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath()).getParent().replace(
+						"%20", " ")
+						+ File.separator + "games");
+		if (!f.exists()) {
+			f.mkdirs();
+		}
+		return f;
+
+	}
+
 	private final ArrayList<Game> games = new ArrayList<Game>();
+
 	private final ArrayList<GameDefinition> defs = new ArrayList<GameDefinition>();
 
 	public GameHandler() {
 		init();
+	}
+
+	public ArrayList<Game> getGames() {
+		return games;
 	}
 
 	private void init() {
@@ -28,31 +45,15 @@ public class GameHandler {
 		}
 	}
 
-	private static File getPluginsFolder() {
-		final File f = new File(new File(Main.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath()).getParent().replace(
-				"%20", " ")
-				+ File.separator + "games");
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-		return f;
-
+	public void reload() {
+		stopGames();
+		System.gc();
+		init();
 	}
 
 	public void stopGames() {
 		games.clear();
 		defs.clear();
-	}
-
-	public ArrayList<Game> getGames() {
-		return games;
-	}
-
-	public void reload() {
-		stopGames();
-		System.gc();
-		init();
 	}
 
 }

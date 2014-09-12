@@ -15,6 +15,24 @@ public class GameClassLoader extends ClassLoader {
 	}
 
 	@Override
+	public URL getResource(final String name) {
+		try {
+			return new URL(base, name);
+		} catch (final MalformedURLException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public InputStream getResourceAsStream(final String name) {
+		try {
+			return new URL(base, name).openStream();
+		} catch (final IOException e) {
+			return null;
+		}
+	}
+
+	@Override
 	public Class<?> loadClass(final String name) throws ClassNotFoundException {
 		Class<?> clazz = null;
 		if (clazz == null) {
@@ -50,24 +68,6 @@ public class GameClassLoader extends ClassLoader {
 			}
 		}
 		return clazz;
-	}
-
-	@Override
-	public URL getResource(final String name) {
-		try {
-			return new URL(base, name);
-		} catch (final MalformedURLException e) {
-			return null;
-		}
-	}
-
-	@Override
-	public InputStream getResourceAsStream(final String name) {
-		try {
-			return new URL(base, name).openStream();
-		} catch (final IOException e) {
-			return null;
-		}
 	}
 
 }

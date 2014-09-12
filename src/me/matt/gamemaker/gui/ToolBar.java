@@ -1,7 +1,6 @@
 package me.matt.gamemaker.gui;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
@@ -17,13 +16,27 @@ import me.matt.gamemaker.game.Game;
 public class ToolBar extends JMenuBar {
 
 	/**
-     * 
-     */
+	 *
+	 */
 	private static final long serialVersionUID = 1L;
 
 	private Debugger debugger;
 
 	private Main main;
+
+	private final JMenu file;
+
+	private final JMenu games;
+
+	private final JMenuItem reload;
+
+	private final JCheckBoxMenuItem fullScreen;
+
+	private final JMenu help;
+
+	private final JMenuItem information;
+	private final JMenuItem about;
+	private final JMenuItem debug;
 
 	public ToolBar(final Main main) {
 		this.main = main;
@@ -43,74 +56,30 @@ public class ToolBar extends JMenuBar {
 		add(games);
 		add(help);
 
-		reload.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				reload();
+		reload.addActionListener(e -> reload());
+		about.addActionListener(e -> {
+			boolean full = false;
+			if (main.isFullScreenMode()) {
+				main.changeFullScreenMode();
+				full = true;
 			}
-
-		});
-		about.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				boolean full = false;
-				if (main.isFullScreenMode()) {
-					main.changeFullScreenMode();
-					full = true;
-				}
-				JOptionPane.showMessageDialog(main,
-						"Game maker V 1.0\n\nMade by: Matt Langlois");
-				if (full) {
-					main.changeFullScreenMode();
-				}
-			}
-		});
-		fullScreen.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent evt) {
+			JOptionPane.showMessageDialog(main,
+					"Game maker V 1.0\n\nMade by: Matt Langlois");
+			if (full) {
 				main.changeFullScreenMode();
 			}
 		});
-		debug.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (debugger != null && debugger.isVisible()) {
-					return;
-				}
-				try {
-					debugger = new Debugger();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		fullScreen.addActionListener(evt -> main.changeFullScreenMode());
+		debug.addActionListener(arg0 -> {
+			if (debugger != null && debugger.isVisible()) {
+				return;
 			}
-
+			try {
+				debugger = new Debugger();
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
 		});
-	}
-
-	public void setGameInformation(final String info) {
-		if (info != null) {
-			help.add(information);
-			for (final ActionListener al : information.getActionListeners()) {
-				information.removeActionListener(al);
-			}
-			information.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent e) {
-					boolean full = false;
-					if (main.isFullScreenMode()) {
-						main.changeFullScreenMode();
-						full = true;
-					}
-					JOptionPane.showMessageDialog(main, info);
-					if (full) {
-						main.changeFullScreenMode();
-					}
-				}
-			});
-		} else {
-			help.remove(information);
-		}
 	}
 
 	public void populateGames() {
@@ -131,21 +100,30 @@ public class ToolBar extends JMenuBar {
 					i.setSelected(true);
 				}
 			}
-			i.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent e) {
-					if (i.isSelected()) {
-						main.disableCurrentGame();
-						main.startGame(g);
-						populateGames();
-					} else if (!i.isSelected()) {
-						main.disableCurrentGame();
-						populateGames();
-					}
+			i.addActionListener(e -> {
+				if (i.isSelected()) {
+					main.disableCurrentGame();
+					main.startGame(g);
+					populateGames();
+				} else if (!i.isSelected()) {
+					main.disableCurrentGame();
+					populateGames();
 				}
 			});
 			games.add(i);
 		}
+	}
+
+	public void reload() {
+		if (debugger != null && debugger.isVisible()) {
+			debugger.clear();
+		}
+		if (main.getCurrentGame() != null) {
+			main.getCurrentGame().onDisable();
+		}
+		main.getGamesHandler().reload();
+		main.reset();
+		populateGames();
 	}
 
 	public void setFullscreenAllowed(final boolean allowed) {
@@ -165,25 +143,26 @@ public class ToolBar extends JMenuBar {
 		}
 	}
 
-	public void reload() {
-		if (debugger != null && debugger.isVisible()) {
-			debugger.clear();
+	public void setGameInformation(final String info) {
+		if (info != null) {
+			help.add(information);
+			for (final ActionListener al : information.getActionListeners()) {
+				information.removeActionListener(al);
+			}
+			information.addActionListener(e -> {
+				boolean full = false;
+				if (main.isFullScreenMode()) {
+					main.changeFullScreenMode();
+					full = true;
+				}
+				JOptionPane.showMessageDialog(main, info);
+				if (full) {
+					main.changeFullScreenMode();
+				}
+			});
+		} else {
+			help.remove(information);
 		}
-		if (main.getCurrentGame() != null) {
-			main.getCurrentGame().onDisable();
-		}
-		main.getGamesHandler().reload();
-		main.reset();
-		populateGames();
 	}
-
-	private final JMenu file;
-	private final JMenu games;
-	private final JMenuItem reload;
-	private final JCheckBoxMenuItem fullScreen;
-	private final JMenu help;
-	private final JMenuItem information;
-	private final JMenuItem about;
-	private final JMenuItem debug;
 
 }

@@ -16,7 +16,7 @@ import me.matt.gamemaker.Main;
 import me.matt.gamemaker.game.Game;
 
 public class Paint extends JPanel implements MouseMotionListener,
-		MouseListener, KeyListener {
+MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,112 +33,6 @@ public class Paint extends JPanel implements MouseMotionListener,
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addKeyListener(this);
-	}
-
-	public void setGame(final Game game) {
-		this.game = game;
-	}
-
-	public void update(int x, int y, int width, int height) {
-		width += main.getInsets().left + main.getInsets().right;
-		height += main.getInsets().bottom;
-		try {
-			backBuffer = new BufferedImage(width, height,
-					BufferedImage.TYPE_INT_RGB);
-		} catch (final Exception ex) {
-		}
-		setMinimumSize(new Dimension(width, height));
-		setPreferredSize(new Dimension(width, height));
-	}
-
-	@Override
-	public void paint(final Graphics g) {
-		try {
-			g.drawImage(backBuffer, 0, 0, null);
-			if (game != null) {
-				game.onRepaint(g);
-			}
-			g.dispose();
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void mouseDragged(final MouseEvent e) {
-		try {
-			if (game != null) {
-				game.mouseDragged(e);
-			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void mouseMoved(final MouseEvent e) {
-		try {
-			if (game != null) {
-				game.mouseMoved(e);
-			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void mouseClicked(final MouseEvent e) {
-		try {
-			if (game != null) {
-				game.mouseClicked(e);
-			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void mouseEntered(final MouseEvent e) {
-		try {
-			if (game != null) {
-				game.mouseEntered(e);
-			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void mouseExited(final MouseEvent e) {
-		try {
-			if (game != null) {
-				game.mouseExited(e);
-			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void mousePressed(final MouseEvent e) {
-		try {
-			if (game != null) {
-				game.mousePressed(e);
-			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void mouseReleased(final MouseEvent e) {
-		try {
-			if (game != null) {
-				game.mouseReleased(e);
-			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	@Override
@@ -172,6 +66,112 @@ public class Paint extends JPanel implements MouseMotionListener,
 		} catch (final Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	@Override
+	public void mouseClicked(final MouseEvent e) {
+		try {
+			if (game != null) {
+				game.mouseClicked(e);
+			}
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseDragged(final MouseEvent e) {
+		try {
+			if (game != null) {
+				game.mouseDragged(e);
+			}
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseEntered(final MouseEvent e) {
+		try {
+			if (game != null) {
+				game.mouseEntered(e);
+			}
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseExited(final MouseEvent e) {
+		try {
+			if (game != null) {
+				game.mouseExited(e);
+			}
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseMoved(final MouseEvent e) {
+		try {
+			if (game != null) {
+				game.mouseMoved(e);
+			}
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mousePressed(final MouseEvent e) {
+		try {
+			if (game != null) {
+				game.mousePressed(e);
+			}
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseReleased(final MouseEvent e) {
+		try {
+			if (game != null) {
+				game.mouseReleased(e);
+			}
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void paint(final Graphics g) {
+		try {
+			g.drawImage(backBuffer, 0, 0, null);
+			if (game != null) {
+				game.onRepaint(g);
+			}
+			g.dispose();
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void setGame(final Game game) {
+		this.game = game;
+	}
+
+	public void update(final int x, final int y, int width, int height) {
+		width += main.getInsets().left + main.getInsets().right;
+		height += main.getInsets().bottom;
+		try {
+			backBuffer = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_RGB);
+		} catch (final Exception ex) {
+		}
+		setMinimumSize(new Dimension(width, height));
+		setPreferredSize(new Dimension(width, height));
 	}
 
 }

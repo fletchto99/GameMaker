@@ -7,8 +7,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
@@ -23,22 +21,19 @@ import me.matt.gamemaker.gui.ToolBar;
 
 public class Main extends JFrame {
 
-	private static final long serialVersionUID = -4815895420008072546L;
-
 	public static void main(final String[] args)
 			throws InvocationTargetException, InterruptedException {
-		SwingUtilities.invokeAndWait(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager
-							.getSystemLookAndFeelClassName());
-				} catch (final Exception e) {
-				}
-				new Main();
+		SwingUtilities.invokeAndWait(() -> {
+			try {
+				UIManager.setLookAndFeel(UIManager
+						.getSystemLookAndFeelClassName());
+			} catch (final Exception e) {
 			}
+			new Main();
 		});
 	}
+
+	private static final long serialVersionUID = -4815895420008072546L;
 
 	private final PaintTask pt;
 
@@ -59,7 +54,7 @@ public class Main extends JFrame {
 		panel = new Paint(this);
 		bar = new ToolBar(this);
 		settings = new GameSettings(this);
-		Container cp = getContentPane();
+		final Container cp = getContentPane();
 		cp.setLayout(new BorderLayout());
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -80,7 +75,7 @@ public class Main extends JFrame {
 
 		panel.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void keyReleased(final KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_R && e.isControlDown()) {
 					bar.reload();
 				}
@@ -93,64 +88,7 @@ public class Main extends JFrame {
 				panel.update(0, 0, getWidth(), getHeight());
 			}
 		});
-		addWindowStateListener(new WindowStateListener() {
-			@Override
-			public void windowStateChanged(final WindowEvent e) {
-				panel.update(0, 0, getWidth(), getHeight());
-			}
-
-		});
-	}
-
-	public ToolBar getToolBar() {
-		return bar;
-	}
-
-	public GameHandler getGamesHandler() {
-		return gh;
-	}
-
-	public Game getCurrentGame() {
-		return current;
-	}
-
-	public void disableCurrentGame() {
-		if (current != null) {
-			current.onDisable();
-		}
-		gh.reload();
-		reset();
-	}
-
-	@Override
-	public void setSize(final int width, final int height) {
-		panel.update(0, 0, width, height);
-		panel.revalidate();
-		pack();
-		System.out.println(panel.getSize());
-	}
-
-	public void startGame(final Game g) {
-		current = g;
-		if (g != null) {
-			panel.setGame(current);
-			current.onLoad(settings);
-		}
-	}
-
-	public void reset() {
-		bar.setFullscreenAllowed(false);
-		bar.setGameInformation(null);
-		current = null;
-		panel.setGame(current);
-		setTitle("Games Manager");
-		setResizable(false);
-		setTickTime(6);
-		setSize(500, 500);
-	}
-
-	public boolean isFullScreenMode() {
-		return fullScreenMode;
+		addWindowStateListener(e -> panel.update(0, 0, getWidth(), getHeight()));
 	}
 
 	public void changeFullScreenMode() {
@@ -172,6 +110,14 @@ public class Main extends JFrame {
 		setVisible(true);
 	}
 
+	public void disableCurrentGame() {
+		if (current != null) {
+			current.onDisable();
+		}
+		gh.reload();
+		reset();
+	}
+
 	@Override
 	public void dispose() {
 		gh.stopGames();
@@ -180,8 +126,51 @@ public class Main extends JFrame {
 		System.exit(0);
 	}
 
-	public void setTickTime(int time) {
+	public Game getCurrentGame() {
+		return current;
+	}
+
+	public GameHandler getGamesHandler() {
+		return gh;
+	}
+
+	public ToolBar getToolBar() {
+		return bar;
+	}
+
+	public boolean isFullScreenMode() {
+		return fullScreenMode;
+	}
+
+	public void reset() {
+		bar.setFullscreenAllowed(false);
+		bar.setGameInformation(null);
+		current = null;
+		panel.setGame(current);
+		setTitle("Games Manager");
+		setResizable(false);
+		setTickTime(6);
+		setSize(500, 500);
+	}
+
+	@Override
+	public void setSize(final int width, final int height) {
+		panel.update(0, 0, width, height);
+		panel.revalidate();
+		pack();
+		System.out.println(panel.getSize());
+	}
+
+	public void setTickTime(final int time) {
 		pt.setTickTime(time);
+	}
+
+	public void startGame(final Game g) {
+		current = g;
+		if (g != null) {
+			panel.setGame(current);
+			current.onLoad(settings);
+		}
 	}
 
 }
