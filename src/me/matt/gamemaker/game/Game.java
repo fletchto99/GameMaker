@@ -8,43 +8,43 @@ import me.matt.gamemaker.GameSettings;
 
 public abstract class Game {
 
-	public abstract String getName();
+    public abstract String getName();
 
-	public abstract double getVersion();
+    public abstract double getVersion();
 
-	public abstract void onLoad(GameSettings settings);
+    public void keyPressed(final KeyEvent e) {
+    }
 
-	public abstract void onDisable();
+    public void keyReleased(final KeyEvent e) {
+    }
 
-	public abstract void onRepaint(Graphics g);
+    public void keyTyped(final KeyEvent e) {
+    }
 
-	public void mouseReleased(final MouseEvent e) {
-	}
+    public void mouseClicked(final MouseEvent e) {
+    }
 
-	public void mousePressed(final MouseEvent e) {
-	}
+    public void mouseDragged(final MouseEvent e) {
+    }
 
-	public void mouseExited(final MouseEvent e) {
-	}
+    public void mouseEntered(final MouseEvent e) {
+    }
 
-	public void mouseEntered(final MouseEvent e) {
-	}
+    public void mouseExited(final MouseEvent e) {
+    }
 
-	public void mouseClicked(final MouseEvent e) {
-	}
+    public void mouseMoved(final MouseEvent e) {
+    }
 
-	public void mouseMoved(final MouseEvent e) {
-	}
+    public void mousePressed(final MouseEvent e) {
+    }
 
-	public void mouseDragged(final MouseEvent e) {
-	}
+    public void mouseReleased(final MouseEvent e) {
+    }
 
-	public void keyPressed(final KeyEvent e) {
-	}
+    public abstract void onDisable();
 
-	public void keyReleased(final KeyEvent e) {
-	}
+    public abstract void onLoad(GameSettings settings);
 
-	public void keyTyped(final KeyEvent e) {
-	}
+    public abstract void onRepaint(Graphics g);
 }
