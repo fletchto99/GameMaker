@@ -8,15 +8,23 @@ public class PaintTask extends Thread implements Runnable {
 
     private int time = 6;
 
-    private final Object lock = new Object();
+    private Object lock = new Object();
 
     public PaintTask(final Paint p) {
         this.p = p;
     }
 
+    public synchronized void setTickTime(int time) {
+        if (time > 0) {
+            synchronized (lock) {
+                this.time = time;
+            }
+        }
+    }
+
     @Override
     public void run() {
-        while (!this.isInterrupted()) {
+        while (!isInterrupted()) {
             p.repaint();
             synchronized (lock) {
                 try {
@@ -24,14 +32,6 @@ public class PaintTask extends Thread implements Runnable {
                 } catch (final InterruptedException e) {
                     break;
                 }
-            }
-        }
-    }
-
-    public synchronized void setTickTime(final int time) {
-        if (time > 0) {
-            synchronized (lock) {
-                this.time = time;
             }
         }
     }
